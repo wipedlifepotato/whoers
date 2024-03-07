@@ -7,20 +7,23 @@ def insert_into_lease_sets(database_path, lease_sets):
 
     try:
         # Создание таблицы, если она не существует
-        cursor.execute('''
+         cursor.execute('''
             CREATE TABLE IF NOT EXISTS lease_sets (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 b32_address TEXT UNIQUE
             )
         ''')
 
-        # Вставка данных в таблицу
-        for address in lease_sets:
-            cursor.execute('INSERT OR IGNORE INTO lease_sets (b32_address) VALUES (?)', (address,))
+         # Вставка данных в таблицу
+         for address in lease_sets:
+             # Check if the lease set already exists
+             cursor.execute("SELECT COUNT(*) FROM lease_sets WHERE b32_address=?", ("%"+address+"%",))
+             count = cursor.fetchone()[0]
+             if count ==0: cursor.execute('INSERT OR IGNORE INTO lease_sets (b32_address) VALUES (?)', (address,))
 
-        # Подтверждение изменений и закрытие соединения
-        conn.commit()
-        print("Данные успешно добавлены в базу данных.")
+         # Подтверждение изменений и закрытие соединения
+         conn.commit()
+         print("Данные успешно добавлены в базу данных.")
     except sqlite3.Error as e:
         print("Ошибка при работе с базой данных:", e)
     finally:

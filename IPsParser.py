@@ -18,7 +18,11 @@ def read_file_and_insert_into_db(file_path, cursor, geoip_reader):
     with open(file_path, 'r') as file:
         for line in file:
             try:
+
                 ip, port = line.strip().split(':')
+                cursor.execute("SELECT COUNT(*) FROM ip_port_data WHERE ip=?", ("%"+ip+"%",))
+                count = cursor.fetchone()[0]
+                if count != 0: continue
                 response = geoip_reader.city(ip)
                 country = response.country.name
                 city = response.city.name
