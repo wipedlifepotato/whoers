@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+</head>
+<body>
+    <h1>Search Results</h1>
+    <form method="post" action="/search">
+        <input type="hidden" name="prev_search_term" value="{{ search_term }}">
+        <ul>
+            {% for result in search_result %}
+                <li>{{ result[1] }} - {{ result[3] }}, {{ result[4] }}</li>
+            {% endfor %}
+        </ul>
+        {% if offset + limit < total_search_results %}
+            <button type="submit" name="offset" value="{{ offset + limit }}">Next</button>
+        {% endif %}
+        {% if offset > 0 %}
+            <button type="submit" name="offset" value="{{ offset - limit }}">Back</button>
+        {% endif %}
+    </form>
+</body>
+</html>
+
