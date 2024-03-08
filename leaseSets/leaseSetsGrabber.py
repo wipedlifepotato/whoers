@@ -48,7 +48,10 @@ def main():
     num_processes = 4
     urls = [
         'http://127.0.0.1:7071/?page=leasesets',
-        'http://127.0.0.1:7070/?page=leasesets',
+        #'http://127.0.0.1:7070/?page=leasesets',
+
+        'http://127.0.0.1:7073/?page=leasesets',
+        #'http://127.0.0.1:7071/?page=leasesets',
         # Add more URLs if needed
     ]
 
